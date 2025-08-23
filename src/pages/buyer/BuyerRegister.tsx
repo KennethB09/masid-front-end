@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/login-form";
-import image from "@/assets/images/login.png"
+import RegisterForm from "@/components/register-form";
+import image from "@/assets/images/img_2.png"
 import logo from "@/assets/images/logo-black.png"
 
 export default function BuyerRegister() {
@@ -15,7 +15,7 @@ export default function BuyerRegister() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            <RegisterForm />
           </div>
         </div>
       </div>

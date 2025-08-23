@@ -1,41 +1,75 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useLogin } from "@/hooks/useLogin";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+const formSchema = z.object({
+  email: z.email(),
+  password: z.string().min(8, { error: "Password should be minimum of 8" })
+});
+
+export function LoginForm() {
+  const { login } = useLogin()
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    login(values.email, values.password)
+  }
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
-      <div className="flex flex-col  gap-2">
-        <h1 className="text-2xl font-semibold">Login</h1>
-        <p className="text-muted-foreground text-sm text-balance">
-          Login to your account
-        </p>
+    <Form {...form}>
+      <div className="py-5">
+        <h1 className="text-gray-900 font-semibold text-lg">Login</h1>
+        <p className="text-gray-700 text-md">Login to your account</p>
       </div>
-      <div className="grid gap-6">
-        <div className="grid gap-3">
-          <Label htmlFor="email" className="font-semibold">Email</Label>
-          <Input id="email" type="email" placeholder="Email" className=" border-gray-900" required />
-        </div>
-        <div className="grid gap-3">
-          <div className="flex items-center">
-            <Label htmlFor="password" className="font-semibold">Password</Label>
-          </div>
-          <Input id="password" type="password" placeholder="Password" className=" border-gray-900" required />
-        </div>
-        <Button type="submit" className="w-full">
-          Login
-        </Button>
-      </div>
-      <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <a href="#" className="underline underline-offset-4 text-blue-600">
-          Register
-        </a>
-      </div>
-    </form>
-  )
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-semibold text-gray-900">Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Email" {...field} className="border-gray-900" required/>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-semibold text-gray-900">Password</FormLabel>
+              <FormControl>
+                <Input placeholder="Password" {...field} className="border-gray-900" required/>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full">Login</Button>
+        <p className="text-gray-900 text-md text-center">Don't have an account? <a className="text-blue-700" href="/auth/buyer/register">Register</a></p>
+      </form>
+    </Form>
+  );
 }
