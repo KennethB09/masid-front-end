@@ -13,32 +13,38 @@ import {
 } from "@/components/ui/form";
 import { useLogin } from "@/hooks/useLogin";
 
+type LoginProps = {
+  href?: string;
+  title?: string;
+  des?: string;
+};
+
 const formSchema = z.object({
   email: z.email(),
-  password: z.string().min(8, { error: "Password should be minimum of 8" })
+  password: z.string().min(8, { error: "Password should be minimum of 8" }),
 });
 
-export function LoginForm() {
-  const { login } = useLogin()
+export function LoginForm({ href, title, des }: LoginProps) {
+  const { login } = useLogin();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    login(values.email, values.password)
+    login(values.email, values.password);
   }
 
   return (
     <Form {...form}>
       <div className="py-5">
-        <h1 className="text-gray-900 font-semibold text-lg">Login</h1>
-        <p className="text-gray-700 text-md">Login to your account</p>
+        <h1 className="text-gray-900 font-semibold text-lg">{title ? title : "Login"}</h1>
+        <p className="text-gray-700 text-md">{des ? des : "Login to your account"}</p>
       </div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -46,9 +52,16 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-semibold text-gray-900">Email</FormLabel>
+              <FormLabel className="font-semibold text-gray-900">
+                Email
+              </FormLabel>
               <FormControl>
-                <Input placeholder="Email" {...field} className="border-gray-900" required/>
+                <Input
+                  placeholder="Email"
+                  {...field}
+                  className="border-gray-900"
+                  required
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -59,16 +72,30 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-semibold text-gray-900">Password</FormLabel>
+              <FormLabel className="font-semibold text-gray-900">
+                Password
+              </FormLabel>
               <FormControl>
-                <Input placeholder="Password" {...field} className="border-gray-900" required/>
+                <Input
+                  placeholder="Password"
+                  {...field}
+                  className="border-gray-900"
+                  required
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Login</Button>
-        <p className="text-gray-900 text-md text-center">Don't have an account? <a className="text-blue-700" href="/auth/buyer/register">Register</a></p>
+        <Button type="submit" className="w-full">
+          Login
+        </Button>
+        <p className="text-gray-900 text-md text-center">
+          Don't have an account?{" "}
+          <a className="text-blue-700" href={href ? href : "/auth/buyer/register"}>
+            Register
+          </a>
+        </p>
       </form>
     </Form>
   );

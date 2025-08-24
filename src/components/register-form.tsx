@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/form";
 import { useRegister } from "@/hooks/useRegister";
 
+type RegisterProps = {
+  role?: "admin" | ""
+  href?: string
+  title?: string
+}
+
 const formSchema = z.object({
   name: z.string().min(2),
   email: z.email(),
@@ -21,7 +27,7 @@ const formSchema = z.object({
   address: z.string(),
 });
 
-export default function RegisterForm() {
+export default function RegisterForm({ role, href, title }: RegisterProps) {
     const { register } = useRegister()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,13 +43,13 @@ export default function RegisterForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    register(values.name, values.email, values.phoneNumber, values.password, values.address)
+    register(values.name, values.email, values.phoneNumber, values.password, values.address, role)
   }
 
   return (
     <Form {...form}>
       <div className="py-5">
-        <h1 className="text-gray-900 font-semibold text-lg">Register</h1>
+        <h1 className="text-gray-900 font-semibold text-lg">{title ? title : "Register"}</h1>
       </div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <FormField
@@ -151,7 +157,7 @@ export default function RegisterForm() {
         </Button>
         <p className="text-gray-900 text-md text-center">
           Already have an account?{" "}
-          <a className="text-blue-700" href="/auth/buyer/login">
+          <a className="text-blue-700" href={href ? href : "/auth/buyer/login"}>
             Login
           </a>
         </p>
