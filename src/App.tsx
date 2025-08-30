@@ -16,38 +16,38 @@ function App() {
       <Route
         path="admin/dashboard"
         element={
-          user ? <AdminDashboard /> : <Navigate to={"auth/admin/login"} />
+          user ? <AdminDashboard /> : <Navigate to={"/auth/admin/login"} />
         }
       />
       <Route
         path="buyer"
-        element={user ? <BuyerHome /> : <Navigate to={"auth/buyer/login"} />}
+        element={user ? <BuyerHome /> : <Navigate to={"/auth/buyer/login"} />}
       />
       <Route
         path="auth/buyer/login"
-        element={!user ? <BuyerLogin /> : <Navigate to={"buyer"} />}
+        element={!user ? <BuyerLogin /> : <Navigate to={"/buyer"} />}
       />
       <Route
         path="auth/buyer/register"
-        element={!user ? <BuyerRegister /> : <Navigate to={"buyer"} />}
+        element={!user ? <BuyerRegister /> : <Navigate to={"/buyer"} />}
       />
       <Route
         path="auth/admin/login"
-        element={!user ? <AdminLogin /> : <Navigate to={"admin/dashboard"} />}
+        element={!user ? <AdminLogin /> : <Navigate to={"/admin/dashboard"} />}
       />
       <Route
         path="auth/admin/register"
         element={
-          !user ? <AdminRegister /> : <Navigate to={"admin/dashboard"} />
+          !user ? <AdminRegister /> : <Navigate to={"/admin/dashboard"} />
         }
       />
       <Route
         path="*"
         element={
           !user ? (
-            <Navigate to={"auth/buyer/login"} />
+            <Navigate to={"/auth/buyer/login"} />
           ) : (
-            <Navigate to={"buyer"} />
+            <Navigate to={"/buyer"} />
           )
         }
       />

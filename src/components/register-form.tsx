@@ -23,8 +23,7 @@ const formSchema = z.object({
   name: z.string().min(2),
   email: z.email(),
   phoneNumber: z.string(),
-  password: z.string().min(8, { error: "password should be minimum of 8" }),
-  address: z.string(),
+  password: z.string().min(8, { error: "password should be minimum of 8" })
 });
 
 export default function RegisterForm({ role, href, title }: RegisterProps) {
@@ -36,8 +35,7 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
       name: "",
       email: "",
       phoneNumber: "",
-      password: "",
-      address: "",
+      password: ""
     },
   });
 
@@ -132,7 +130,6 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
             </FormItem>
           )}
         />
-       
         <Button type="submit" className="w-full">
           Register
         </Button>
