@@ -11,7 +11,6 @@ export const useRegister = () => {
     email: string,
     phoneNumber: string,
     password: string,
-    address: string,
     role?: string
   ) => {
     setIsLoading(true);
@@ -24,7 +23,7 @@ export const useRegister = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, phoneNumber, password, address, role }),
+        body: JSON.stringify({ name, email, phoneNumber, password, role }),
       }
     );
 

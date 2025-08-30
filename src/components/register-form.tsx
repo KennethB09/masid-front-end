@@ -43,7 +43,7 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    register(values.name, values.email, values.phoneNumber, values.password, values.address, role)
+    register(values.name, values.email, values.phoneNumber, values.password, role)
   }
 
   return (
@@ -132,26 +132,7 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-semibold text-gray-900">
-                Address
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Address"
-                  {...field}
-                  className="border-gray-900"
-                  required
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+       
         <Button type="submit" className="w-full">
           Register
         </Button>
