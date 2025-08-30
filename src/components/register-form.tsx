@@ -23,8 +23,7 @@ const formSchema = z.object({
   name: z.string().min(2),
   email: z.email(),
   phoneNumber: z.string(),
-  password: z.string().min(8, { error: "password should be minimum of 8" }),
-  address: z.string(),
+  password: z.string().min(8, { error: "password should be minimum of 8" })
 });
 
 export default function RegisterForm({ role, href, title }: RegisterProps) {
@@ -36,14 +35,13 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
       name: "",
       email: "",
       phoneNumber: "",
-      password: "",
-      address: "",
+      password: ""
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    register(values.name, values.email, values.phoneNumber, values.password, values.address, role)
+    register(values.name, values.email, values.phoneNumber, values.password, role)
   }
 
   return (
@@ -123,26 +121,6 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
               <FormControl>
                 <Input
                   placeholder="Password"
-                  {...field}
-                  className="border-gray-900"
-                  required
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-semibold text-gray-900">
-                Address
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Address"
                   {...field}
                   className="border-gray-900"
                   required
