@@ -7,7 +7,7 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const login = async (email: string, password: string) => {
+    const login = async (email: string, password: string,  captchaToken: string) => {
         setIsLoading(true);
         setError(null);
 
@@ -16,7 +16,7 @@ export const useLogin = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password, captchaToken})
         });
 
         const json = await response.json();

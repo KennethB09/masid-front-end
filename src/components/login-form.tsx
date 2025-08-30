@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
+import React, { useState } from "react";
 import {
   Form,
   FormControl,
@@ -26,6 +28,7 @@ const formSchema = z.object({
 
 export function LoginForm({ href, title, des }: LoginProps) {
   const { login } = useLogin();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,9 +40,12 @@ export function LoginForm({ href, title, des }: LoginProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    login(values.email, values.password);
+    if (!captchaToken) {
+      alert("Please complete the reCAPTCHA");
+      return;
+    }
+    login(values.email, values.password, captchaToken);
   }
-
   return (
     <Form {...form}>
       <div className="py-5">
@@ -87,6 +93,9 @@ export function LoginForm({ href, title, des }: LoginProps) {
             </FormItem>
           )}
         />
+        <ReCAPTCHA 
+        sitekey="6Ldpk7ArAAAAAEWjwcTREcHRH4u12ByICBHD-s3Q"
+        onChange={(token) => setCaptchaToken(token)}/>
         <Button type="submit" className="w-full">
           Login
         </Button>
