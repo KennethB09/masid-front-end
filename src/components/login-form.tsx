@@ -29,7 +29,7 @@ const formSchema = z.object({
 export function LoginForm({ href, title, des }: LoginProps) {
   const { login } = useLogin();
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-
+  // console.log(captchaToken)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

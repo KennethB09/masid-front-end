@@ -16,29 +16,49 @@ function App() {
       <Route
         path="admin/dashboard"
         element={
-          user ? <AdminDashboard /> : <Navigate to={"/auth/admin/login"} />
+          user && user.role === "ADMIN" ? (
+            <AdminDashboard />
+          ) : (
+            <Navigate to={"/auth/admin/login"} />
+          )
         }
       />
       <Route
         path="buyer"
-        element={user ? <BuyerHome /> : <Navigate to={"/auth/buyer/login"} />}
+        element={
+          user && user.role === "" ? (
+            <BuyerHome />
+          ) : (
+            <Navigate to={"/auth/buyer/login"} />
+          )
+        }
       />
       <Route
         path="auth/buyer/login"
-        element={!user ? <BuyerLogin /> : <Navigate to={"/buyer"} />}
+        element={!user || user.role !== "" ? <BuyerLogin /> : <Navigate to={"/buyer"} />}
       />
       <Route
         path="auth/buyer/register"
-        element={!user ? <BuyerRegister /> : <Navigate to={"/buyer"} />}
+        element={!user || user.role !== "" ? <BuyerRegister /> : <Navigate to={"/buyer"} />}
       />
       <Route
         path="auth/admin/login"
-        element={!user ? <AdminLogin /> : <Navigate to={"/admin/dashboard"} />}
+        element={
+          user && user.role === "ADMIN" ? (
+            <Navigate to={"/admin/dashboard"} />
+          ) : (
+            <AdminLogin />
+          )
+        }
       />
       <Route
         path="auth/admin/register"
         element={
-          !user ? <AdminRegister /> : <Navigate to={"/admin/dashboard"} />
+          user && user.role === "ADMIN" ? (
+            <Navigate to={"/admin/dashboard"} />
+          ) : (
+            <AdminRegister />
+          )
         }
       />
       <Route
