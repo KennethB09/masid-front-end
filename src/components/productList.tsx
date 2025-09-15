@@ -3,16 +3,20 @@ import { useProductContext } from "@/context/ProductContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ProductSkeleton from "./productSkeleton";
+import type { product } from "@/types/data";
+import { Dialog } from "@/components/ui/dialog";
+import ProductDialog from "./productDialog";
 
 export default function ProductList() {
   const [isLoading, setIsLoading] = useState(false);
   const { product, dispatch } = useProductContext();
+  const [clickProduct, setClickProduct] = useState<product | null>(null);
   const { user } = useAuthContext();
 
   useEffect(() => {
     async function getProduct() {
-      setIsLoading(true)
-      
+      setIsLoading(true);
+
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/product/get-all`,
         {
@@ -37,8 +41,23 @@ export default function ProductList() {
     getProduct();
   }, []);
 
+  function onClickProduct(data: product) {
+    setClickProduct(data);
+  }
+
   return (
     <main className="flex flex-wrap overflow-y-scroll gap-2 p-2">
+      <Dialog
+        open={clickProduct !== null}
+        onOpenChange={() => setClickProduct(null)}
+      >
+        {clickProduct && (
+          <ProductDialog
+            product={clickProduct}
+            closeDialog={() => setClickProduct(null)}
+          />
+        )}
+      </Dialog>
       {isLoading ? (
         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"].map(
           (i) => <ProductSkeleton key={i} />
@@ -47,9 +66,17 @@ export default function ProductList() {
         product?.map((p) => (
           <div
             key={p.id}
-            className="flex flex-row rounded-[10px] overflow-hidden gap-1 border border-neutral-800 h-32"
+            onClick={() => onClickProduct(p)}
+            className="flex flex-row rounded-[10px] overflow-hidden gap-1 border border-neutral-800 h-32 min-w-64"
           >
-            <img src={p.imageUrl} className="h-full" />
+            <img
+              src={
+                typeof p.imageUrl === "string"
+                  ? p.imageUrl
+                  : URL.createObjectURL(p.imageUrl)
+              }
+              className="h-full"
+            />
             <div className="p-2 text-sm">
               <div>
                 <h1 className="font-semibold">Product ID</h1>

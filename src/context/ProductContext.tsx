@@ -12,7 +12,7 @@ type ProductAction =
       type: "UPDATE_PRODUCT";
       payload: { productId: string; updatedData: product };
     }
-  | { type: "DELETE_PRODUCT"; payload: product }
+  | { type: "DELETE_PRODUCT"; payload: string }
   | { type: "SEARCH_PRODUCT"; payload: product[] };
 
 type ProductContextType = {
@@ -52,7 +52,7 @@ const productReducer = (
       return {
         ...state,
         product: state.product
-          ? state.product?.filter((p) => p.id !== action.payload.id)
+          ? state.product?.filter((p) => p.id !== action.payload)
           : null,
       };
     case "SEARCH_PRODUCT":

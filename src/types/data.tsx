@@ -12,6 +12,6 @@ export type product = {
     name: string
     description: string
     price: string
-    imageUrl: string
+    imageUrl: string | File
     category: string
 }

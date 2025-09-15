@@ -1,7 +1,5 @@
 import {
-  DialogContent,
   DialogFooter,
-  DialogClose,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -12,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { category } from "@/types/data";
+import type { category, product } from "@/types/data";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
@@ -27,11 +25,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { Image, X } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
 import Loading from "./loading";
 import { Textarea } from "@/components/ui/textarea";
+import { useProductContext } from "@/context/ProductContext";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -49,27 +48,34 @@ const formSchema = z.object({
     ),
 });
 
-export default function AddProduct() {
+type UpdateProductProps = {
+  product: product;
+  cancel: React.Dispatch<React.SetStateAction<boolean>>;
+  closeDialog: () => void;
+};
+
+export default function UpdateProduct({ product, cancel, closeDialog }: UpdateProductProps) {
   const [categories, setCategories] = useState<category[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState<File | null>(null);
+  const [newImage, setNewImage] = useState<File | null>(null);
   const { user } = useAuthContext();
+  const { dispatch } = useProductContext();
+
+  const productImage = product.imageUrl;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      price: 1,
-      categoryId: "",
+      name: product.name,
+      description: product.description,
+      price: +product.price,
+      categoryId: product.category,
       image: undefined,
     },
   });
 
   useEffect(() => {
     async function getProductCategoty() {
-      setIsLoading(true);
-      
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/category/get-all`,
         {
@@ -116,9 +122,9 @@ export default function AddProduct() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/product/create`,
+        `${import.meta.env.VITE_SERVER_URL}/product/update/${product.id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -133,17 +139,33 @@ export default function AddProduct() {
         return toast.error(json.message);
       }
 
+      dispatch({
+        type: "UPDATE_PRODUCT",
+        payload: {
+          productId: product.id,
+          updatedData: {
+            id: product.id,
+            name,
+            description,
+            price: price.toString(),
+            imageUrl: image,
+            category: categoryId,
+          },
+        },
+      });
+
       handleReset();
-      setImage(null);
+      setNewImage(null);
       setIsLoading(false);
       toast.success(json.message);
+      closeDialog();
     } catch (err: any) {
       console.log(err.message);
     }
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!image) {
+    if (!newImage) {
       return toast.warning("Product image is required");
     }
 
@@ -158,11 +180,12 @@ export default function AddProduct() {
 
   function handleReset() {
     form.reset();
-    setImage(null);
+    setNewImage(null);
+    cancel((p) => !p);
   }
 
   return (
-    <DialogContent className="min-w-[50%] p-0 overflow-hidden">
+    <div className="min-w-[50%] p-0 overflow-hidden">
       {isLoading && <Loading />}
       <div className="flex w-full">
         <Form {...form}>
@@ -170,26 +193,27 @@ export default function AddProduct() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-row gap-2 w-full"
           >
-            <div className="relative w-1/2 h-full bg-neutral-400 flex justify-center items-center">
-              {image && <img src={URL.createObjectURL(image)} />}
+            <div className="relative w-1/2 h-full bg-neutral-900 flex justify-center items-center">
+              {newImage ? (
+                <img src={URL.createObjectURL(newImage)} />
+              ) : (
+                <img src={typeof productImage === "string" ? productImage : URL.createObjectURL(productImage)} />
+              )}
               <FormField
                 control={form.control}
                 name="image"
                 render={({ field: { value, onChange, ...fieldProps } }) => (
                   <FormItem>
-                    {image && (
+                    {newImage ? (
                       <Button
-                        className="absolute top-2 left-1"
-                        onClick={() => setImage(null)}
-                        variant={"ghost"}
+                        className="text-neutral-900 font-semibold flex flex-col cursor-pointer bg-white rounded-4xl absolute top-2 left-1 p-2"
+                        onClick={() => setNewImage(null)}
                       >
-                        <X color="#FFFFFF" size={25} />
+                        <X size={15} />
                       </Button>
-                    )}
-                    {!image && (
-                      <FormLabel className="text-neutral-800 font-semibold flex flex-col cursor-pointer">
-                        <Image color="#1E1E1E" size={25} />
-                        Select Image
+                    ) : (
+                      <FormLabel className="text-neutral-900 font-semibold flex flex-col cursor-pointer bg-white rounded-4xl absolute top-2 left-1 p-2">
+                        <Pencil size={15} />
                       </FormLabel>
                     )}
                     <FormControl>
@@ -200,7 +224,9 @@ export default function AddProduct() {
                         className="w-full"
                         onChange={(event) => {
                           onChange(event.target.files && event.target.files[0]);
-                          setImage(event.target.files && event.target.files[0]);
+                          setNewImage(
+                            event.target.files && event.target.files[0]
+                          );
                         }}
                         accept="image/*"
                         required
@@ -215,9 +241,17 @@ export default function AddProduct() {
               <div className="flex flex-col space-y-2">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="font-semibold text-neutral-800">
-                    Add New Product
+                    Update Product
                   </DialogTitle>
                 </DialogHeader>
+                <div>
+                  <h1 className="font-semibold text-sm text-neutral-800">
+                    Product ID
+                  </h1>
+                  <p className="font-medium text-sm text-neutral-700">
+                    {product.id}
+                  </p>
+                </div>
                 <FormField
                   control={form.control}
                   name="name"
@@ -295,7 +329,7 @@ export default function AddProduct() {
                         <Select
                           {...field}
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          defaultValue={product.category}
                           value={field.value}
                           required
                         >
@@ -324,23 +358,21 @@ export default function AddProduct() {
                 </div>
               </div>
               <DialogFooter>
-                <DialogClose asChild>
-                  <Button
-                    variant="outline"
-                    className="w-24"
-                    onClick={handleReset}
-                  >
-                    Cancel
-                  </Button>
-                </DialogClose>
+                <Button
+                  variant="outline"
+                  className="w-24"
+                  onClick={handleReset}
+                >
+                  Cancel
+                </Button>
                 <Button type="submit" className="w-24">
-                  Add
+                  Save
                 </Button>
               </DialogFooter>
             </div>
           </form>
         </Form>
       </div>
-    </DialogContent>
+    </div>
   );
 }
