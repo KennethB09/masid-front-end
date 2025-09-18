@@ -62,8 +62,8 @@ export default function ProductList() {
         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"].map(
           (i) => <ProductSkeleton key={i} />
         )
-      ) : product?.length !== 0 ? (
-        product?.map((p) => (
+      ) : product.length !== 0 ? (
+        product.map((p) => (
           <div
             key={p.id}
             onClick={() => onClickProduct(p)}
@@ -77,14 +77,14 @@ export default function ProductList() {
               }
               className="h-full"
             />
-            <div className="p-2 text-sm">
+            <div className="p-2 text-sm max-w-36">
               <div>
                 <h1 className="font-semibold">Product ID</h1>
                 <p className="font-medium text-neutral-700">{p.id}</p>
               </div>
               <div>
                 <h1 className="font-semibold">Product Name</h1>
-                <p className="font-medium text-neutral-700">{p.name}</p>
+                <p className="font-medium text-neutral-700 truncate">{p.name}</p>
               </div>
               {/* <div>
                 <h1 className="font-semibold">Category</h1>

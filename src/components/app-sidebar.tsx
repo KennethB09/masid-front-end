@@ -41,6 +41,11 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { dispatch } = useAuthContext();
 
+  function handleLogout() {
+    localStorage.removeItem("user")
+    dispatch({ type: "LOGOUT" })
+  };
+
   return (
     <Sidebar variant="sidebar" {...props}>
       <SidebarHeader className="bg-neutral-800">
@@ -77,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu>
             <Button
-              onClick={() => dispatch({ type: "LOGOUT" })}
+              onClick={handleLogout}
               variant={"outline"}
               className="font-semibold border-white bg-transparent text-white"
             >

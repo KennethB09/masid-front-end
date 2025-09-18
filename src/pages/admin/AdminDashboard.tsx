@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import AddProduct from "@/components/addProduct";
 import { Toaster } from "@/components/ui/sonner"
+import ManageCategoryDialog from "@/components/manageCategories/manageCategoryDialog";
 
 export default function AdminDashboard() {
   return (
@@ -41,12 +42,7 @@ export default function AdminDashboard() {
                 <SearchForm />
               </div>
               <div className="flex gap-2">
-                <Button
-                  variant={"outline"}
-                  className="text-neutral-800 font-semibold"
-                >
-                  Manage Categories
-                </Button>
+                <ManageCategoryDialog />
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button

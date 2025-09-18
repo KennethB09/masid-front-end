@@ -71,7 +71,7 @@ export default function ProductDialog({ product, closeDialog }: ProductDialogPro
                   <div className="flex flex-row gap-2 mt-2">
                     <Button
                       onClick={onClickUpdate}
-                      className="border-[1.5px] border-neutral-800 w-24 font-semibold hover:border-blue-700 hover:text-blue-700"
+                      className="border-[1.5px] border-neutral-800 w-24 font-semibold hover:border-blue-500 hover:text-blue-500 hover:bg-transparent"
                       variant={"outline"}
                     >
                       <Pencil size={25} /> Update

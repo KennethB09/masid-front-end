@@ -36,7 +36,7 @@ import { Textarea } from "@/components/ui/textarea";
 const formSchema = z.object({
   name: z.string().min(2),
   description: z.string(),
-  price: z.number().min(1).max(9999),
+  price: z.number().min(1),
   categoryId: z.string(),
   image: z
     .instanceof(File)

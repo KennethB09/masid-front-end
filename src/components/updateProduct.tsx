@@ -55,11 +55,11 @@ type UpdateProductProps = {
 };
 
 export default function UpdateProduct({ product, cancel, closeDialog }: UpdateProductProps) {
-  const [categories, setCategories] = useState<category[] | []>([]);
+  // const [categories, setCategories] = useState<category[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [newImage, setNewImage] = useState<File | null>(null);
   const { user } = useAuthContext();
-  const { dispatch } = useProductContext();
+  const { categories, dispatch } = useProductContext();
 
   const productImage = product.imageUrl;
 
@@ -74,31 +74,31 @@ export default function UpdateProduct({ product, cancel, closeDialog }: UpdatePr
     },
   });
 
-  useEffect(() => {
-    async function getProductCategoty() {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/category/get-all`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+  // useEffect(() => {
+  //   async function getProductCategoty() {
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_SERVER_URL}/category/get-all`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${user.token}`,
+  //         },
+  //       }
+  //     );
 
-      const json = await response.json();
+  //     const json = await response.json();
 
-      if (!response.ok) {
-        setIsLoading(false);
-        return toast.error(json.message);
-      }
+  //     if (!response.ok) {
+  //       setIsLoading(false);
+  //       return toast.error(json.message);
+  //     }
 
-      setIsLoading(false);
-      setCategories(json.categoryList);
-    }
+  //     setIsLoading(false);
+  //     setCategories(json.categoryList);
+  //   }
 
-    getProductCategoty();
-  }, []);
+  //   getProductCategoty();
+  // }, []);
 
   async function handleAddProduct(
     name: string,

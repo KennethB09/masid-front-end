@@ -14,11 +14,11 @@ import { toast } from "sonner";
 import { useProductContext } from "@/context/ProductContext";
 
 export function SearchForm({ ...props }: React.ComponentProps<"form">) {
-  const [input, setInput] = useState(""); // Add state for search input
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState<category[] | []>([]);
+  // const [categories, setCategories] = useState<category[] | []>([]);
   const { user } = useAuthContext();
-  const { dispatch } = useProductContext();
+  const { categories, dispatch } = useProductContext();
 
   useEffect(() => {
     async function getProductCategoty() {
@@ -41,10 +41,11 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
         setIsLoading(false);
         return toast.warning(json.message);
       }
-      if (response.ok) {
-        setIsLoading(false);
-        setCategories(json.categoryList);
-      }
+
+
+      setIsLoading(false);
+      // setCategories(json.categoryList);
+      dispatch({ type: "SET_CATEGORIES", payload: json.categoryList })
     }
 
     getProductCategoty();

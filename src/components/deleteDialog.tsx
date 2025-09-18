@@ -33,24 +33,23 @@ export default function DeleteDialog({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className="flex flex-col gap-2 border-[1.5px] border-neutral-800 w-24 font-semibold hover:border-red-700 hover:text-red-700"
+          className="flex flex-col gap-2 border-[1.5px] border-neutral-800 w-24 font-semibold hover:border-red-500 hover:text-red-500 hover:bg-transparent"
           variant={"outline"}
         >
           {icon && <Trash size={25} />}
           {triggerText}
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="w-fit">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogDescription hidden>{description}</AlertDialogDescription>
         </AlertDialogHeader>
+        <p className="font-medium text-neutral-700 text-sm">{description}</p>
         <AlertDialogFooter>
-          <AlertDialogCancel>
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={() => action(productId)}>
-            Continue
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
