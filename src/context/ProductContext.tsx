@@ -1,9 +1,10 @@
-import type { category, product } from "@/types/data";
+import type { category, order, orderStatus, product } from "@/types/data";
 import { createContext, useContext, useReducer, type ReactNode } from "react";
 
 export interface ProductState {
   product: product[] | [];
   categories: category[] | [];
+  orders: order[] | [];
 }
 
 type ProductAction =
@@ -20,11 +21,14 @@ type ProductAction =
       type: "UPDATE_CATEGORY";
       payload: { categoryId: string; updatedData: category };
     }
-  | { type: "DELETE_CATEGORY"; payload: string };
+  | { type: "DELETE_CATEGORY"; payload: string }
+  | { type: "SET_ORDERS"; payload: order[] }
+  | { type: "UPDATE_ORDER_STATUS"; payload: { orderId: number, newStatus: orderStatus } }
 
 type ProductContextType = {
   product: product[] | [];
   categories: category[] | [];
+  orders: order[] | [];
   dispatch: React.Dispatch<ProductAction>;
 };
 
@@ -83,6 +87,20 @@ const productReducer = (
         ...state,
         categories: state.categories.filter((c) => c.id !== action.payload),
       };
+      case "SET_ORDERS":
+        return {
+          ...state,
+          orders: action.payload
+        }
+        case "UPDATE_ORDER_STATUS":
+          return {
+            ...state,
+            orders: state.orders.map(o =>
+              o.id === action.payload.orderId
+                ? { ...o, status: action.payload.newStatus }
+                : o
+            )
+          }
     default:
       return state;
   }
@@ -92,6 +110,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(productReducer, {
     product: [],
     categories: [],
+    orders: []
   });
 
   return (

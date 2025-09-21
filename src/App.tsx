@@ -14,7 +14,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path="admin/dashboard"
+        path="admin/dashboard/*"
         element={
           user && user.role === "ADMIN" ? (
             <AdminDashboard />

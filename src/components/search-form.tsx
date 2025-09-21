@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import type { category } from "@/types/data";
 import { useAuthContext } from "@/context/AuthContext";
 import Loading from "./loading";
 import { toast } from "sonner";
@@ -16,7 +15,6 @@ import { useProductContext } from "@/context/ProductContext";
 export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // const [categories, setCategories] = useState<category[] | []>([]);
   const { user } = useAuthContext();
   const { categories, dispatch } = useProductContext();
 
@@ -44,7 +42,6 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
 
 
       setIsLoading(false);
-      // setCategories(json.categoryList);
       dispatch({ type: "SET_CATEGORIES", payload: json.categoryList })
     }
 
@@ -112,13 +109,13 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
         <Input
           type="search"
           placeholder="Search Products"
-          className="border-1 border-neutral-800"
+          className="border-1"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
       </form>
       <Select onValueChange={(value) => handleFilterByCategory(value)}>
-        <SelectTrigger className="border-neutral-800 min-w-[8rem] text-neutral-700 font-medium capitalize">
+        <SelectTrigger className="min-w-[8rem] text-neutral-700 font-medium capitalize">
           <SelectValue placeholder="Category" />
         </SelectTrigger>
         <SelectContent>
