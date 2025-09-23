@@ -24,9 +24,9 @@ function App() {
         }
       />
       <Route
-        path="buyer"
+        path="buyer/*"
         element={
-          user && user.role === "" ? (
+          user && user.role === "USER" ? (
             <BuyerHome />
           ) : (
             <Navigate to={"/auth/buyer/login"} />
@@ -38,7 +38,7 @@ function App() {
         element={
           !user ? (
             <BuyerLogin />
-          ) : user.role !== "" ? (
+          ) : user.role !== "USER" ? (
             <Navigate to={"/admin/dashboard"} />
           ) : (
             <Navigate to={"/buyer"} />
@@ -48,7 +48,7 @@ function App() {
       <Route
         path="auth/buyer/register"
         element={
-          !user || user.role !== "" ? (
+          !user || user.role !== "USER" ? (
             <BuyerRegister />
           ) : (
             <Navigate to={"/buyer"} />

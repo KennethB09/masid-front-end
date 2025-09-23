@@ -19,12 +19,13 @@ export type product = {
 export type userRole = "ADMIN" | "";
 
 export type user = {
-    id: number;
-    name: string;
-    email: string;
-    phoneNumber: string;
-    role: userRole
-}
+  id: number;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  role: userRole;
+  address: address;
+};
 
 export type orderStatus =
   | "PENDING"
@@ -42,4 +43,13 @@ export type order = {
   user: user;
   product: product;
   createdAt: string;
+};
+
+export type address = {
+  id: number;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
 };
