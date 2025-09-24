@@ -29,9 +29,9 @@ export default function CustomerProfile({ customer }: CustomerProfileProps) {
           <User className="!size-6" /> Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-auto">
+      <DialogContent className="w-auto max-sm:min-w-full max-sm:min-h-full max-sm:flex max-sm:flex-col max-sm:rounded-none">
         <DialogHeader>
-          <DialogTitle className="text-neutral-800">{!editAddress ? "Profile" : "Edit Address"}</DialogTitle>
+          <DialogTitle className="text-neutral-800 text-start">{!editAddress ? "Profile" : "Edit Address"}</DialogTitle>
           <DialogDescription hidden>Your profile</DialogDescription>
         </DialogHeader>
         {!editAddress && <div>
@@ -46,7 +46,7 @@ export default function CustomerProfile({ customer }: CustomerProfileProps) {
         {editAddress ? (
           <CustomerEditAddress setState={setEditAddress} address={customer.address} />
         ) : (
-          <div className="flex gap-10">
+          <div className="flex max-sm:flex-col gap-10">
             <div>
               <div>
                 <h1 className="font-semibold text-sm text-neutral-800">Name</h1>

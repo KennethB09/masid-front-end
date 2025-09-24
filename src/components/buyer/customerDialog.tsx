@@ -65,16 +65,16 @@ export default function CustomerDialog() {
           <User className="!size-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-80 text-neutral-800">
-        <DialogHeader>
-          <DialogTitle className="text-neutral-800">Cutomer</DialogTitle>
+      <DialogContent className="flex flex-col max-sm:rounded-none max-sm:min-w-full max-sm:h-full text-neutral-800">
+        <DialogHeader className="mb-4">
+          <DialogTitle className="text-neutral-800 text-start">Cutomer</DialogTitle>
           <DialogDescription hidden>
             The profile, orders, and logout of user.
           </DialogDescription>
         </DialogHeader>
         {!isLoading && <CustomerProfile customer={customerInfo!}/>}
         {!isLoading && <CustomerOrder orders={customerInfo?.orderItemList ? customerInfo?.orderItemList : []}/>}
-        <Button variant={"destructive"} onClick={handleLogout}>Logout</Button>
+        <Button variant={"destructive"} onClick={handleLogout} className="mt-auto">Logout</Button>
       </DialogContent>
     </Dialog>
   );

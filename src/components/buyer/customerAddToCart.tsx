@@ -30,7 +30,7 @@ export default function CustomerAddToCart() {
   const { product } = useProductContext();
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(cart);
+  // console.log(cart);
 
   useEffect(() => {
     function getCart() {
@@ -123,12 +123,12 @@ export default function CustomerAddToCart() {
           <ShoppingCart className="!size-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[60%]">
+      <DialogContent className="flex flex-col max-sm:rounded-none max-sm:min-w-full max-sm:min-h-full  max-h-[60%]">
         <DialogHeader>
-          <DialogTitle className="text-neutral-800">Your Cart</DialogTitle>
+          <DialogTitle className="text-neutral-800 text-start">Your Cart</DialogTitle>
           <DialogDescription hidden>Your cart</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col overflow-y-scroll h-full gap-2">
+        <div className="flex flex-col overflow-y-scroll h-full gap-2 ">
           {cart.length !== 0 ? (
             cart.map((item) => (
               <div key={item.id} className="flex gap-3 max-w-full items-center">
@@ -175,12 +175,12 @@ export default function CustomerAddToCart() {
               </div>
             ))
           ) : (
-            <div className="text-center font-semibold text-neutral-700">
+            <div className="flex items-center justify-center text-center font-semibold h-full text-neutral-500">
               <p>Your Cart is empty.</p>
             </div>
           )}
         </div>
-        <div className="flex justify-between gap-2 mt-2">
+        <div className="flex justify-between items-center h-fit py-2 gap-2 mt-auto ">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"

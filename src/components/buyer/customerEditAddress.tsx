@@ -81,7 +81,7 @@ export default function CustomerEditAddress({ setState, address }: CustomerEditA
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-[25rem]">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-[25rem] max-sm:w-fit">
         <FormField
           control={form.control}
           name="street"
@@ -182,7 +182,7 @@ export default function CustomerEditAddress({ setState, address }: CustomerEditA
             </FormItem>
           )}
         />
-        <div className="flex gap-3 justify-end">
+        <div className="flex gap-3 justify-end mt-auto">
             <Button className="font-semibold text-neutral-800 w-24" variant={"outline"} onClick={() => setState(PREV => !PREV)}>Cancel</Button>
             <Button className="w-24" type="submit" disabled={isLoading}>{isLoading ? <Loader2Icon /> : "Save"}</Button>
         </div>
