@@ -3,11 +3,12 @@ import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
 import type { user } from "@/types/data";
 import UsersList from "./usersList";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Users() {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
-    const [users, setUsers] = useState<user[] | []>([]);
+  const [users, setUsers] = useState<user[] | []>([]);
 
   useEffect(() => {
     async function getUsers() {
@@ -31,7 +32,7 @@ export default function Users() {
       }
 
       setIsLoading(false);
-      setUsers(json.userList)
+      setUsers(json.userList);
     }
 
     getUsers();
@@ -39,7 +40,8 @@ export default function Users() {
 
   return (
     <div className="h-screen flex flex-col m-4 gap-4">
-      <header className="flex shrink-0 items-center gap-2 justify-between">
+      <header className="flex shrink-0 items-center gap-2">
+        <SidebarTrigger className="-ml-1" />
         <h1 className="text-neutral-800 font-semibold text-lg">Users</h1>
       </header>
       {!isLoading ? <UsersList users={users} /> : <p>Loading</p>}

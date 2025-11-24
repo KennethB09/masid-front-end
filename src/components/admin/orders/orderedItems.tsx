@@ -85,9 +85,9 @@ export default function OrderedItems() {
   }
 
   return (
-    <div className="h-full flex flex-col p-4">
+    <div className="h-full flex flex-col px-4 pb-4">
       <div>
-        <form className="flex gap-3 mb-4" onSubmit={handleFilter}>
+        <form className="flex flex-wrap gap-3 mb-4" onSubmit={handleFilter}>
           <Input
             type="number"
             value={input}

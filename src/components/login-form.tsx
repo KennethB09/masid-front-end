@@ -27,7 +27,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm({ href, title, des }: LoginProps) {
-  const { login } = useLogin();
+  const { login, isLoading } = useLogin();
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   // console.log(captchaToken)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -96,7 +96,7 @@ export function LoginForm({ href, title, des }: LoginProps) {
         <ReCAPTCHA 
         sitekey="6Ldpk7ArAAAAAEWjwcTREcHRH4u12ByICBHD-s3Q"
         onChange={(token) => setCaptchaToken(token)}/>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isLoading}>
           Login
         </Button>
         <p className="text-gray-900 text-md text-center">

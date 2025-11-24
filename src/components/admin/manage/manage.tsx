@@ -20,7 +20,7 @@ export default function Manage() {
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row">
               <SidebarTrigger className="-ml-1" />
-              <h1 className="font-semibold text-lg text-neutral-800">Manage</h1>
+              <h1 className="font-semibold text-lg text-neutral-800 max-sm:hidden">Manage</h1>
             </div>
             <SearchForm />
           </div>
