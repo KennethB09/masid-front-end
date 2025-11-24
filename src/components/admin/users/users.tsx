@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import type { user } from "@/types/data";
 import UsersList from "./usersList";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import LoadingComponent from "@/components/loadingComponent";
 
 export default function Users() {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +37,7 @@ export default function Users() {
     }
 
     getUsers();
-  }, []);
+  }, [user.token]);
 
   return (
     <div className="h-screen flex flex-col m-4 gap-4">
@@ -44,7 +45,7 @@ export default function Users() {
         <SidebarTrigger className="-ml-1" />
         <h1 className="text-neutral-800 font-semibold text-lg">Users</h1>
       </header>
-      {!isLoading ? <UsersList users={users} /> : <p>Loading</p>}
+      {!isLoading ? <UsersList users={users} /> : <LoadingComponent />}
     </div>
   );
 }

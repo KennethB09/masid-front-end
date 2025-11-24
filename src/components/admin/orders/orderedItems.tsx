@@ -14,6 +14,7 @@ import { useProductContext } from "@/context/ProductContext";
 import { toast } from "sonner";
 import type { orderStatus } from "@/types/data";
 import { Button } from "@/components/ui/button";
+import LoadingComponent from "@/components/loadingComponent";
 
 export default function OrderedItems() {
   const { user } = useAuthContext();
@@ -51,7 +52,7 @@ export default function OrderedItems() {
     }
 
     getOrders();
-  }, []);
+  }, [user.token, dispatch]);
 
   async function handleFilter(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -116,7 +117,7 @@ export default function OrderedItems() {
           <Button className="w-24" type="submit">Filter</Button>
         </form>
       </div>
-      {!isLoading ? <ItemsTable orders={orders} /> : <p>loading</p>}
+      {!isLoading ? <ItemsTable orders={orders} /> : <LoadingComponent />}
     </div>
   );
 }
