@@ -13,7 +13,7 @@ export default function SearchProduct() {
 
   function onClickProduct(data: product) {
     console.log(data);
-    navigate("product-info", {
+    navigate("/buyer/product-info", {
       state: data,
     });
   }
