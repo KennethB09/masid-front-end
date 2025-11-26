@@ -12,12 +12,15 @@ import ProductInfo from "@/components/buyer/productInfo";
 import Orders from "@/components/admin/orders/orders";
 import Users from "@/components/admin/users/users";
 import Manage from "@/components/admin/manage/manage";
+import GuestPage from "./pages/guestPage";
 
 function App() {
   const { user } = useAuthContext();
 
   return (
     <Routes>
+
+      <Route path="" element={!user ? <GuestPage /> : <Navigate to={"/auth/buyer/login"} />}/>
 
       <Route
         path="admin/dashboard"
@@ -65,10 +68,10 @@ function App() {
       <Route
         path="auth/buyer/register"
         element={
-          !user || user.role !== "USER" ? (
+          !user ? (
             <BuyerRegister />
           ) : (
-            <Navigate to={"/buyer"} />
+            user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} />
           )
         }
       />
@@ -100,7 +103,7 @@ function App() {
         path="*"
         element={
           !user ? (
-            <Navigate to={"/auth/buyer/login"} />
+            <Navigate to={""} />
           ) : (
             <Navigate to={"/buyer"} />
           )
