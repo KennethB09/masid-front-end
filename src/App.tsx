@@ -3,7 +3,7 @@ import BuyerRegister from "./pages/buyer/BuyerRegister";
 import BuyerLogin from "./pages/buyer/BuyerLogin";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, Outlet } from "react-router";
 import { useAuthContext } from "./context/AuthContext";
 import BuyerHome from "./pages/buyer/BuyerHome";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -19,8 +19,10 @@ function App() {
 
   return (
     <Routes>
-
-      <Route path="" element={!user ? <GuestPage /> : <Navigate to={"/auth/buyer/login"} />}/>
+      <Route
+        path=""
+        element={!user ? <GuestPage /> : <Navigate to={"/auth/buyer/login"} />}
+      />
 
       <Route
         path="admin/dashboard"
@@ -41,7 +43,11 @@ function App() {
         path="buyer"
         element={
           user ? (
-            user.role !== "USER" && <Navigate to={"/admin/dashboard"} />
+            user.role === "USER" ? (
+              <Outlet />
+            ) : (
+              <Navigate to={"/admin/dashboard"} />
+            )
           ) : (
             <Navigate to={"/auth/buyer/login"} />
           )
@@ -71,7 +77,7 @@ function App() {
           !user ? (
             <BuyerRegister />
           ) : (
-            user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} />
+            user.role === "USER" && !user.token && <BuyerLogin />
           )
         }
       />
@@ -101,13 +107,7 @@ function App() {
       />
       <Route
         path="*"
-        element={
-          !user ? (
-            <Navigate to={""} />
-          ) : (
-            <Navigate to={"/buyer"} />
-          )
-        }
+        element={!user ? <Navigate to={""} /> : <Navigate to={"/buyer"} />}
       />
     </Routes>
   );

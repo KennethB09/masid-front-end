@@ -34,7 +34,8 @@ export const useRegister = () => {
       setIsLoading(false);
     }
     if (response.ok) {
-      localStorage.setItem("user", JSON.stringify(json));
+      console.log(json)
+      localStorage.setItem("user", JSON.stringify(json.user));
       dispatch({ type: "LOGIN", payload: json });
       setIsLoading(false);
       setError(null);
